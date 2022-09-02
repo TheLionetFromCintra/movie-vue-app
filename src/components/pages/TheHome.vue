@@ -1,13 +1,18 @@
 <template>
-  <div>2</div>
+  <tabs-bar />
+  <main-slider />
 </template>
 
 <script>
-export default {};
+import MainSlider from "../sliders/main/MainSlider.vue";
+import TabsBar from "../ui/TabsBar.vue";
+
+export default {
+  components: {
+    MainSlider,
+    TabsBar,
+  },
+};
 </script>
 
-<style lang="scss" scoped>
-div {
-  height: 1000px;
-}
-</style>
+<style lang="scss" scoped></style>

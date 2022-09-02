@@ -2,7 +2,9 @@
   <div>
     <main class="flex main">
       <the-side-bar />
-      <router-view />
+      <div class="content">
+        <router-view />
+      </div>
     </main>
     <the-footer />
   </div>
@@ -163,6 +165,27 @@ img {
 }
 .main {
   min-height: calc(100vh - 60px);
-  display: unset;
+}
+.content {
+  padding: 28px 38px;
+  width: 100%;
+  max-width: 70%;
+  border-left: 1px solid rgb(58 57 57/1);
+  border-right: 1px solid rgb(58 57 57/1);
+}
+.swiper {
+  height: 100%;
+}
+.img-wrapper {
+  width: 100%;
+  overflow: hidden;
+}
+.text-overflow {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
 }
 </style>

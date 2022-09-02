@@ -5,7 +5,7 @@
         <img src="../../assets/images/cinema.png" alt="logo" />
       </div>
       <h1 class="text-lg text-white tracking-widest font-semibold uppercase">
-        <span>movie</span><span class="title--blue">hunter</span>
+        <span>movies</span><span class="title--blue">hunter</span>
       </h1>
     </router-link>
   </div>
