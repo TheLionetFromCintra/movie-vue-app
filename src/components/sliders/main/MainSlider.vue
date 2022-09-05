@@ -1,7 +1,16 @@
 <template>
   <div class="main-slider">
     <base-spinner v-if="isMainSliderLoaded" />
-    <swiper :speed="500">
+    <swiper
+      :speed="500"
+      :navigation="true"
+      :modules="modules"
+      :autoplay="{
+        delay: 3500,
+        disableOnInteraction: false,
+      }"
+      v-if="mainSlides"
+    >
       <swiper-slide v-for="slide in mainSlides" :key="slide.id">
         <main-slide :slide="slide" />
       </swiper-slide>
@@ -11,17 +20,23 @@
 
 <script>
 import { Swiper, SwiperSlide } from "swiper/vue";
+import { Navigation, Autoplay } from "swiper";
+import "swiper/css/navigation";
 import MainSlide from "./MainSlide.vue";
 import { mapGetters } from "vuex";
 
 import "swiper/css";
-import "swiper/css/effect-fade";
 
 export default {
   components: {
     Swiper,
     SwiperSlide,
     MainSlide,
+  },
+  data() {
+    return {
+      error: "",
+    };
   },
   methods: {
     async loadMainSlider() {
@@ -33,6 +48,11 @@ export default {
         this.error = error.message || "Something went wrong!";
       }
     },
+  },
+  setup() {
+    return {
+      modules: [Navigation, Autoplay],
+    };
   },
   computed: {
     ...mapGetters({

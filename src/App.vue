@@ -188,4 +188,20 @@ img {
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
 }
+.main-slider .swiper-button-prev,
+.main-slider .swiper-button-next {
+  top: 6% !important;
+  z-index: 20 !important;
+  color: #fff !important;
+}
+.main-slider .swiper-button-prev::after,
+.main-slider .swiper-button-next::after {
+  font-size: 15px;
+}
+.main-slider .swiper-button-prev {
+  left: 2% !important;
+}
+.main-slider .swiper-button-next {
+  left: 5% !important;
+}
 </style>

@@ -3,6 +3,8 @@ import api from "../../../api.js";
 export default {
   async loadMainSlider(context, payload) {
     context.commit("isMainSliderLoaded", true);
+    context.commit("loadMainSliderItems", []);
+
     const res = await api
       .get(`/${context.rootState.movies.currentState}/${payload.typePlaying}`)
       .finally(() => {

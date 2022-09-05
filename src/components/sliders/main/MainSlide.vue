@@ -12,6 +12,11 @@
         <use href="../../../assets/images/icons.svg#icon-rating"></use>
       </svg>
     </div>
+    <div class="slide-play-btn rounded-full flex items-center justify-center">
+      <svg>
+        <use href="../../../assets/images/icons.svg#icon-play-btn"></use>
+      </svg>
+    </div>
     <div class="img-wrapper" v-if="slide.backdrop_path">
       <div class="img img-wrapper flex items-center justify-center">
         <img
@@ -44,7 +49,13 @@
         >
       </div>
       <div class="slide-genres flex items-center">
-        <div class="slide-genre rounded-full">Comedy</div>
+        <div
+          class="slide-genre rounded-full"
+          v-for="genre in genres"
+          :key="genre.id"
+        >
+          {{ genre.name }}
+        </div>
       </div>
       <div class="slide-text text-overflow" v-if="slide.overview">
         <p>{{ slide.overview }}</p>
@@ -54,8 +65,16 @@
 </template>
 
 <script>
+import api from "../../../api.js";
+
 export default {
   props: ["slide"],
+  data() {
+    return {
+      genres: [],
+      error: "",
+    };
+  },
   computed: {
     getCurrentState() {
       return this.$store.getters["movies/currentState"];
@@ -63,6 +82,27 @@ export default {
     backdropImage() {
       return "https://image.tmdb.org/t/p/w1280" + this.slide.backdrop_path;
     },
+  },
+  methods: {
+    async getGenres() {
+      try {
+        const res = await api.get(`/genre/${this.getCurrentState}/list`);
+        const data = res.data.genres;
+        this.genres = data
+          .map((item) => {
+            if (this.slide.genre_ids.includes(item.id)) {
+              return item;
+            }
+          })
+          .filter((item) => item);
+      } catch (error) {
+        this.error = error.message || "Something went wrong!";
+      }
+    },
+  },
+
+  mounted() {
+    this.getGenres();
   },
 };
 </script>
@@ -74,7 +114,9 @@ export default {
   position: relative;
   z-index: 10;
   padding-left: 70px;
-  &::before {
+
+  &::before,
+  &::after {
     content: "";
     width: 100%;
     height: 100%;
@@ -82,11 +124,40 @@ export default {
     top: 0;
     left: 0;
     z-index: -1;
-    background: linear-gradient(270deg, transparent, rgba(0, 0, 0, 0.75) 65%);
   }
-  &:hover::before {
-    // background: linear-gradient(270deg, transparent, rgba(0, 0, 0, 0.75) 45%);
+  &::before {
+    background: linear-gradient(270deg, transparent, rgba(0, 0, 0, 0.55) 65%);
   }
+  &::after {
+    background: linear-gradient(-270deg, transparent, rgba(0, 0, 0, 0.55) 65%);
+    opacity: 0;
+    transition: opacity 0.3s linear;
+  }
+  &-play-btn {
+    width: 64px;
+    height: 64px;
+    color: #fff;
+    background: linear-gradient(#5179ff, #c353b4);
+    transition: opacity 0.3s linear, visibility 0.3s linear;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    visibility: hidden;
+    svg {
+      width: 35px;
+      height: 35px;
+    }
+  }
+  &:hover &-play-btn {
+    opacity: 1;
+    visibility: visible;
+  }
+  &:hover::after {
+    opacity: 1;
+  }
+
   &-title {
     color: $color-primary-blue;
     margin-bottom: 24px;
@@ -105,6 +176,9 @@ export default {
   &-genre {
     padding: 4px 12px;
     border: 1px solid #fff;
+  }
+  &-genre + &-genre {
+    margin-left: 10px;
   }
   &-content {
     width: 100%;
